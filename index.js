@@ -45,5 +45,12 @@ client.on('interactionCreate', async interaction => {
 	}
 });
 
+try {
+	global.leaguesData = JSON.parse(fs.readFileSync('./data.json', 'utf8'));
+// eslint-disable-next-line no-empty
+} catch (err) {
+
+}
+
 // Login to Discord with your client's token
 client.login(process.env.DISCORD_TOKEN);
