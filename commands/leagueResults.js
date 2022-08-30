@@ -1,15 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { request } = require('undici');
-
-async function getJSONResponse(body) {
-	let fullBody = '';
-
-	for await (const data of body) {
-		fullBody += data.toString();
-	}
-
-	return JSON.parse(fullBody);
-}
+const { default: axios } = require('axios');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -18,15 +8,28 @@ module.exports = {
 		.addStringOption(option => option.setName('league').setDescription('The registered league you want to check the table for.')),
 	async execute(interaction) {
 		await interaction.deferReply();
-		// const league = interaction.options.getString('league');
-		// const id = global.leaguesData[league];
-		const leagueId = '355362';
+		const league = interaction.options.getString('league');
+		const leagueId = global.leaguesData[league];
+		console.log(league);
+		console.log(leagueId);
 
-		const query = new URLSearchParams({ leagueId });
-		const dircRes = await request(`https://fantasy.premierleague.com/api/leagues-classic/${query}/standings/`);
-		console.log(dircRes);
-		const { res } = await getJSONResponse(dircRes.body);
-		await interaction.editReply(res);
-		//
+		const getResults = async (id) => {
+			const response = await axios.get(`https://fantasy.premierleague.com/api/leagues-classic/${id}/standings/`);
+			const results = response.data;
+			return results;
+		};
+
+		try {
+			const res = await getResults(leagueId);
+			console.log(res.standings.results[1]);
+			const standings = JSON.stringify(res.standings.results);
+
+			// gets first place
+			console.log(standings[0]);
+			await interaction.editReply(standings);
+		} catch (error) {
+			console.error(error);
+			await interaction.editReply('Something went wrong. Have you registered the league with /register ?');
+		}
 	},
 };
