@@ -59,7 +59,7 @@ module.exports = {
 					{ name: '\u200B', value: '\u200B', inline: true },
 					{ name: 'Name', value: position.player_name, inline: true },
 					{ name: 'GW Points', value: JSON.stringify(position.event_total), inline: true },
-					{ name: 'Overall Points', value: JSON.stringify(position.event_total), inline: true },
+					{ name: 'Overall Points', value: JSON.stringify(position.total), inline: true },
 					{ name: '\u200B', value: '\u200B' });
 			});
 			await interaction.editReply({
