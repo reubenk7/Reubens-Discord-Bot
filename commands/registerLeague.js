@@ -14,7 +14,7 @@ module.exports = {
 		global.leaguesData[name] = id;
 		const newData = JSON.stringify(global.leaguesData, null, 2);
 		fs.writeFileSync('data.json', newData);
-		await interaction.reply(`League name: ${name}\nOf ID: ${id}\n JSON\n ${newData}`);
+		await interaction.reply(`League name: ${name}\nID: ${id}\nSucessfully Registered!`);
 		//
 	},
 };
