@@ -5,10 +5,20 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 // Require the necessary discord.js classes
-const { Client, Collection, Intents } = require('discord.js');
+// const { Client, Collection, GatewayIntentBits } = require('discord.js');
+const { Client, GatewayIntentBits, Collection } = require('discord.js');
 
 // Create a new client instance
-const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+// const client = new Client({ intents: [GatewayIntentBits.GUILDS] });
+
+
+const client = new Client({
+	intents: [
+		GatewayIntentBits.Guilds,
+		GatewayIntentBits.GuildMessages,
+	],
+});
+
 client.commands = new Collection();
 
 // set commands path to the commands folder
